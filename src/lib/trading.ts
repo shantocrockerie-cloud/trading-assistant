@@ -1,15 +1,19 @@
 export interface Candle { open: number; high: number; low: number; close: number; timestamp?: number }
 export function calculateEMA(closes: number[], span: number): number[] {
+  const first = closes[0];
+  if (first === undefined) return [];
   const alpha = 2 / (span + 1);
   const ema: number[] = new Array(closes.length);
-  ema[0] = closes[0];
+  ema[0] = first;
   for (let i = 1; i < closes.length; i++) {
-    ema[i] = alpha * closes[i] + (1 - alpha) * ema[i - 1];
+    ema[i] = alpha * (closes[i] ?? first) + (1 - alpha) * (ema[i - 1] ?? first);
   }
   return ema;
 }
 
 export function calcIndicators(candles: Candle[]) {
+  const last = candles.at(-1);
+  if (!last || candles.length < 30) throw new Error('At least 30 candles are required');
   const closes = candles.map((c) => c.close);
   const n = closes.length;
 
@@ -20,7 +24,7 @@ export function calcIndicators(candles: Candle[]) {
   const gains: number[] = [];
   const losses: number[] = [];
   for (let i = 1; i < n; i++) {
-    const diff = closes[i] - closes[i - 1];
+    const diff = (closes[i] ?? last.close) - (closes[i - 1] ?? last.close);
     gains.push(diff > 0 ? diff : 0);
     losses.push(diff < 0 ? -diff : 0);
   }
@@ -53,8 +57,6 @@ export function calcIndicators(candles: Candle[]) {
   const last20Candles = candles.slice(-20);
   const high20 = Math.max(...last20Candles.map((c) => c.high));
   const low20 = Math.min(...last20Candles.map((c) => c.low));
-
-  const last = candles[n - 1];
 
   return {
     close: Number(last.close),
@@ -172,8 +174,8 @@ export const assets = [
  {name:'BTC / USDT',short:'₿',payout:85,base:65000,precision:2,type:'Crypto',change:'+1.28%'},
  {name:'ETH / USDT',short:'Ξ',payout:85,base:2480,precision:2,type:'Crypto',change:'+0.84%'},
  {name:'BNB / USDT',short:'BN',payout:80,base:585,precision:2,type:'Crypto',change:'+0.42%'},
- {name:'EUR / USD',short:'EU',payout:82,base:1.085,precision:4,type:'Currency',change:'+0.18%'}
-];
+ {name:'EUR / USDT',short:'EU',payout:82,base:1.085,precision:4,type:'Forex',change:'+0.18%'}
+] as const;
 export function demoCandles(base: number, timeframe = 1): Candle[] {
  let current=base*0.996;
  return Array.from({length:76},(_,i)=>{

@@ -17,7 +17,7 @@ export function PriceChart({candles, precision, indicators, line, zoom, expanded
  const dx=(w-right-left)/data.length; const x=(i:number)=>left+dx*(i+0.5);
  ctx.font='10px "JetBrains Mono", monospace';
  for(let i=0;i<6;i++) {const val=min+(max-min)*i/5;const yp=y(val);ctx.strokeStyle=token('--chart-grid');ctx.lineWidth=.6;ctx.beginPath();ctx.moveTo(left,yp);ctx.lineTo(w-right,yp);ctx.stroke();ctx.fillStyle=token('--muted-foreground');ctx.fillText(val.toFixed(precision),w-right+9,yp+3);}
- for(let i=0;i<data.length;i+=12) {ctx.strokeStyle=token('--chart-grid');ctx.beginPath();ctx.moveTo(x(i),top-12);ctx.lineTo(x(i),h-33);ctx.stroke();ctx.fillStyle=token('--muted-foreground');ctx.fillText(new Date(data[i].timestamp??0).toISOString().slice(11,16),x(i)-15,h-14);}
+ for(let i=0;i<data.length;i+=12) {ctx.strokeStyle=token('--chart-grid');ctx.beginPath();ctx.moveTo(x(i),top-12);ctx.lineTo(x(i),h-33);ctx.stroke();ctx.fillStyle=token('--muted-foreground');ctx.fillText(new Date(data[i]?.timestamp??0).toISOString().slice(11,16),x(i)-15,h-14);}
  const path=(values:number[],color:string,width=1)=>{ctx.strokeStyle=color;ctx.lineWidth=width;ctx.beginPath();values.forEach((v,i)=>i===0?ctx.moveTo(x(i),y(v)):ctx.lineTo(x(i),y(v)));ctx.stroke();};
  if(indicators) {const mids=closes.map((_,i)=>{const list=closes.slice(Math.max(0,i-19),i+1);return list.reduce((a,b)=>a+b,0)/list.length});path(mids.map(v=>v+(hi-lo)*.2),token('--chart-band'));path(mids.map(v=>v-(hi-lo)*.2),token('--chart-band'));path(calculateEMA(closes,9),token('--chart-fast'),1.3);path(calculateEMA(closes,21),token('--chart-slow'),1.3);}
  if(line) path(closes,token('--primary'),1.6);
