@@ -176,11 +176,15 @@ export const assets = [
  {name:'BNB / USDT',short:'BN',payout:80,base:585,precision:2,type:'Crypto',change:'+0.42%'},
  {name:'EUR / USDT',short:'EU',payout:82,base:1.085,precision:4,type:'Forex',change:'+0.18%'}
 ] as const;
-export function demoCandles(base: number, timeframe = 1): Candle[] {
+export function demoCandles(base: number, timeframe = 1, seed = 0): Candle[] {
  let current=base*0.996;
+ let s=(seed*2654435761)>>>0;
+ const rand=()=>{s=(s+0x6D2B79F5)>>>0;let t=s;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return((t^(t>>>14))>>>0)/4294967296;};
+ const drift=seed?(rand()-0.5)*0.9:0.14;
  return Array.from({length:76},(_,i)=>{
  const open=current;
- const delta=(Math.sin(i*1.79+timeframe)*0.7+Math.cos(i*0.39)*0.6+0.14)*base*0.00035;
+ const noise=seed?(rand()-0.5)*2.2:0;
+ const delta=(Math.sin(i*1.79+timeframe+seed)*0.7+Math.cos(i*0.39+seed*0.5)*0.6+drift+noise)*base*0.00035;
  const close=open+delta; current=close;
  return {open,close,high:Math.max(open,close)+base*(0.00012+Math.abs(Math.sin(i))*0.00015),low:Math.min(open,close)-base*(0.00012+Math.abs(Math.cos(i))*0.00013),timestamp:1791799200000+i*timeframe*60000};
  });
