@@ -72,15 +72,14 @@ export const analyzeWithAi = createServerFn({ method: "POST" })
         configured: true,
       };
     } catch (error) {
-      const message = error instanceof Error ? error.message : String(error);
       const status = (error as { statusCode?: number }).statusCode;
       const friendly =
         status === 429
           ? "The configured model is rate limited. Try again shortly."
           : status === 401 || status === 403
             ? "The configured model rejected its API credentials."
-            : `AI analysis failed: ${message.slice(0, 140)}`;
-      console.error("AI analyst failed", status, message);
+            : "The configured AI provider could not complete this analysis.";
+      console.error("AI analyst failed", status, error instanceof Error ? error.name : "UnknownError");
       return {
         direction: "WAIT",
         confidence: 0,
