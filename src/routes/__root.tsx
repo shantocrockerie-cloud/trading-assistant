@@ -78,15 +78,24 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "CODEX — Paper Trading Terminal" },
-      { name: "description", content: "CODEX market analysis and simulated paper trading terminal." },
-      { property: "og:title", content: "CODEX — Paper Trading Terminal" },
-      { property: "og:description", content: "Market analysis and simulated paper trading in one focused workspace." },
+      { title: "Trading Assistant — Market Research Terminal" },
+      {
+        name: "description",
+        content: "Browser-based market research with Binance candles, rule-based analyst agents, and session-only paper trading.",
+      },
+      { property: "og:title", content: "Trading Assistant — Market Research Terminal" },
+      {
+        property: "og:description",
+        content: "Market analysis and simulated paper trading in one focused workspace.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;550;600;650;700;750&family=JetBrains+Mono:wght@400;500;600&display=swap" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;550;600;650;700;750&family=JetBrains+Mono:wght@400;500;600&display=swap",
+      },
       {
         rel: "stylesheet",
         href: appCss,

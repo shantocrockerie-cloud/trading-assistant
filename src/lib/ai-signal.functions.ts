@@ -1,7 +1,13 @@
-import { createServerFn } from '@tanstack/react-start';
-import { z } from 'zod';
+import { createServerFn } from "@tanstack/react-start";
+import { z } from "zod";
 
-const candleSchema = z.object({ open: z.number(), high: z.number(), low: z.number(), close: z.number(), timestamp: z.number().optional() });
+const candleSchema = z.object({
+  open: z.number(),
+  high: z.number(),
+  low: z.number(),
+  close: z.number(),
+  timestamp: z.number().optional(),
+});
 const inputSchema = z.object({
   symbol: z.string().max(40),
   timeframe: z.string().max(8),
@@ -9,40 +15,78 @@ const inputSchema = z.object({
   indicators: z.record(z.string(), z.number()),
 });
 
-export type AiSignal = { direction: 'CALL' | 'PUT' | 'WAIT'; confidence: number; rationale: string; error?: string };
+export type AiSignal = {
+  direction: "CALL" | "PUT" | "WAIT";
+  confidence: number;
+  rationale: string;
+  configured: boolean;
+  error?: string;
+};
 
-export const analyzeWithAi = createServerFn({ method: 'POST' })
-  .inputValidator((d: unknown) => inputSchema.parse(d))
+export const analyzeWithAi = createServerFn({ method: "POST" })
+  .validator((value: unknown) => inputSchema.parse(value))
   .handler(async ({ data }): Promise<AiSignal> => {
-    const apiKey = process.env['LOVABLE_API_KEY'];
-    if (!apiKey) return { direction: 'WAIT', confidence: 0, rationale: '', error: 'AI is not configured.' };
-    const { createOpenAI } = await import('@ai-sdk/openai');
-    const { streamText, Output, NoObjectGeneratedError } = await import('ai');
-    const provider = createOpenAI({
-      baseURL: 'https://ai.gateway.lovable.dev/v1',
-      apiKey,
-      headers: { 'Lovable-API-Key': apiKey, 'X-Lovable-AIG-SDK': 'vercel-ai-sdk' },
-    });
-    const rows = data.candles.slice(-60).map((c) => `${new Date(c.timestamp ?? 0).toISOString().slice(11, 16)} O${c.open} H${c.high} L${c.low} C${c.close}`).join('\n');
-    const result = streamText({
-      model: provider.responses('openai/gpt-6-astra'),
-      instructions:
-        'You are a short-term technical analyst for a paper-trading terminal. Given recent candles and indicators, decide CALL (price likely higher at expiry), PUT (lower), or WAIT (no clear edge). Prefer WAIT when signals conflict. confidence is 0-100. rationale: 2-4 concise sentences citing specific evidence. Never claim certainty.',
-      prompt: `Market: ${data.symbol}\nTimeframe: ${data.timeframe}\nIndicators: ${JSON.stringify(data.indicators)}\nRecent candles (oldest first):\n${rows}`,
-      output: Output.object({ schema: z.object({ direction: z.enum(['CALL', 'PUT', 'WAIT']), confidence: z.number(), rationale: z.string() }) }),
-      providerOptions: { openai: { store: false, forceReasoning: true, reasoningEffort: 'low', reasoningSummary: 'auto', include: ['reasoning.encrypted_content'] } },
-    });
+    // Keep provider credentials on the server. Any OpenAI-compatible chat endpoint can be used.
+    const apiKey = process.env["AI_API_KEY"] ?? process.env["OPENAI_API_KEY"];
+    const baseURL = process.env["AI_BASE_URL"];
+    const model = process.env["AI_MODEL"];
+    if (!apiKey || !baseURL || !model) {
+      return {
+        direction: "WAIT",
+        confidence: 0,
+        rationale: "",
+        configured: false,
+      };
+    }
+
     try {
-      const o = await result.output;
-      return { ...o, confidence: Math.max(0, Math.min(100, Math.round(o.confidence))) };
-    } catch (e) {
-      if (NoObjectGeneratedError.isInstance(e) && e.text) {
-        try { const o = JSON.parse(e.text); return { direction: o.direction ?? 'WAIT', confidence: Number(o.confidence) || 0, rationale: String(o.rationale ?? '') }; } catch { /* fall through */ }
-      }
-      const msg = e instanceof Error ? e.message : String(e);
-      const status = (e as { statusCode?: number }).statusCode;
-      const friendly = status === 429 ? 'AI is busy — try again in a moment.' : status === 402 ? 'AI credits are used up for this workspace.' : `AI analysis failed: ${msg.slice(0, 160)}`;
-      console.error('AI signal failed', status, msg);
-      return { direction: 'WAIT', confidence: 0, rationale: '', error: friendly };
+      const { createOpenAI } = await import("@ai-sdk/openai");
+      const { generateText } = await import("ai");
+      const provider = createOpenAI({ apiKey, baseURL });
+      const rows = data.candles
+        .slice(-60)
+        .map((c) => {
+          const time = c.timestamp ? new Date(c.timestamp).toISOString() : "unknown time";
+          return `${time} O${c.open} H${c.high} L${c.low} C${c.close}`;
+        })
+        .join("\n");
+      const result = await generateText({
+        model: provider.chat(model),
+        temperature: 0.2,
+        system:
+          'You are one technical research analyst in a paper-trading terminal. Return only JSON with keys "direction" (CALL, PUT, or WAIT), "confidence" (0 to 100), and "rationale" (2 or 3 concise sentences). Cite the supplied candle evidence, prefer WAIT when evidence conflicts, and never imply certainty or personalized advice.',
+        prompt: `Market: ${data.symbol}\nTimeframe: ${data.timeframe}\nIndicators: ${JSON.stringify(data.indicators)}\nCandles, oldest first:\n${rows}`,
+      });
+      const objectText = result.text.match(/\{[\s\S]*\}/)?.[0];
+      if (!objectText) throw new Error("The model did not return a JSON analysis.");
+      const output = z
+        .object({
+          direction: z.enum(["CALL", "PUT", "WAIT"]),
+          confidence: z.number(),
+          rationale: z.string().min(1).max(700),
+        })
+        .parse(JSON.parse(objectText));
+      return {
+        ...output,
+        confidence: Math.max(0, Math.min(100, Math.round(output.confidence))),
+        configured: true,
+      };
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      const status = (error as { statusCode?: number }).statusCode;
+      const friendly =
+        status === 429
+          ? "The configured model is rate limited. Try again shortly."
+          : status === 401 || status === 403
+            ? "The configured model rejected its API credentials."
+            : `AI analysis failed: ${message.slice(0, 140)}`;
+      console.error("AI analyst failed", status, message);
+      return {
+        direction: "WAIT",
+        confidence: 0,
+        rationale: "",
+        configured: true,
+        error: friendly,
+      };
     }
   });

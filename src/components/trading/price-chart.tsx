@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { calculateEMA, type Candle } from '@/lib/trading';
 
-export function PriceChart({candles, precision, indicators, line, zoom, expanded}:{candles:Candle[];precision:number;indicators:boolean;line:boolean;zoom:number;expanded:boolean}) {
+export function PriceChart({candles, precision, indicators, line, zoom, expanded, source}:{candles:Candle[];precision:number;indicators:boolean;line:boolean;zoom:number;expanded:boolean;source?:string}) {
  const ref=useRef<HTMLCanvasElement>(null);
  useEffect(()=>{
  const canvas=ref.current;if(!canvas)return;
@@ -26,5 +26,5 @@ export function PriceChart({candles, precision, indicators, line, zoom, expanded
  };
  draw();const observer=new ResizeObserver(draw);observer.observe(canvas);return()=>observer.disconnect();
  },[candles,precision,indicators,line,zoom,expanded]);
- return <canvas ref={ref} role="img" aria-label="Simulated candlestick price chart with EMA indicators and volume" />;
+ return <canvas ref={ref} role="img" aria-label={`${source ?? "Market"} candlestick price chart with EMA indicators and volume`} />;
 }

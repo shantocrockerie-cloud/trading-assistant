@@ -17,3 +17,52 @@ button,input,select {font:inherit} button,a,input,select {touch-action:manipulat
 @media(max-width:1100px) {.app-header {padding:0 20px} .header-nav {gap:4px} .header-nav .terminal-button {font-size:12px;padding:0 8px} .header-end {gap:10px} .profile {display:none} .workspace {padding:24px 20px 0} .main-grid {grid-template-columns:minmax(0,1fr) 300px;gap:16px} .asset-strip {grid-template-columns:repeat(3,1fr)} .asset-tile {height:89px} .strategy-grid {grid-template-columns:repeat(2,1fr)} .asset-bottom strong {font-size:14px}}
 @media(max-width:760px) {.app-header {height:68px;padding:0 16px;gap:12px} .header-nav,.header-end>.paper-tag,.header-end>.terminal-button,.profile {display:none} .header-balance {border:0;padding:0;text-align:right} .header-balance strong {font-size:14px} .brand-title {font-size:20px} .brand-caption {font-size:9px} .workspace {padding:21px 16px 86px} .intro {margin-bottom:20px;align-items:flex-start} .intro h1 {font-size:23px} .intro p {font-size:12px;max-width:230px;line-height:1.6} .session {font-size:10px;margin-top:7px;gap:5px} .session .session-time {display:none} .asset-strip {grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:20px} .asset-tile {height:84px;padding:11px} .asset-strip>.asset-tile:nth-child(n+5) {display:none} .asset-top {font-size:11px} .asset-bottom {font-size:10px} .main-grid {grid-template-columns:1fr;gap:24px} .chart-header {padding:16px 12px} .chart-asset h2 {font-size:14px} .chart-header-price strong {font-size:18px} .chart-header-price span {font-size:10px} .chart-asset .asset-icon {width:29px;height:29px} .chart-canvas {height:315px} .chart-toolbar {padding:6px 8px} .chart-source {left:12px;font-size:9px;gap:10px} .chart-foot {padding:10px 12px;font-size:9px} .configuration {padding-top:19px} .select-field {font-size:13px} .form-grid {gap:10px} .strategy-title {font-size:11px} .strategy {padding:12px;font-size:12px} .scan-button {height:48px} .signal-result h3 {font-size:27px} .signal-content {padding:20px} .indicator-row {font-size:12px;padding:9px 0} .indicator-row strong {font-size:11px} .reason {font-size:12px} .trade-actions .terminal-button {height:65px;font-size:14px} .stake-row .terminal-button {height:40px;font-size:12px} .history-table td,.history-table th {padding:12px} .history-table {font-size:11px} .history-header {gap:8px} .history-tabs {gap:15px} .history-header>.terminal-button {font-size:10px;padding:0 8px} .risk-grid {grid-template-columns:1fr 1fr;gap:24px} .footer {display:block;margin-top:20px;font-size:10px} .footer span {display:block;margin-top:12px} .mobile-dock {display:flex;justify-content:space-around;position:fixed;bottom:0;left:0;right:0;height:67px;padding-bottom:env(safe-area-inset-bottom);background:var(--card);border-top:1px solid var(--border);z-index:30} .mobile-dock .terminal-button {display:flex;flex-direction:column;gap:5px;font-size:10px;min-width:65px;height:61px} .mobile-dock .terminal-button svg {width:18px;height:18px} .mobile-dock .selected {color:var(--primary)} }
 @media(prefers-reduced-motion:reduce) {*,*:before,*:after {animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* Full framework research report */
+.research-section {margin:24px 0;padding:20px;background:var(--card);border:1px solid var(--border);border-radius:8px}
+.research-header {align-items:center;margin-bottom:18px}
+.research-header h2 {font-size:16px;font-weight:650}
+.research-header p {margin-top:5px}
+.research-controls {display:grid;grid-template-columns:1fr 1fr 150px auto;align-items:end;gap:12px}
+.research-controls label {display:grid;gap:6px;font-size:11px;color:var(--muted-foreground)}
+.research-controls input,.research-controls select {height:40px;min-width:0;padding:0 10px;border:1px solid var(--border);border-radius:6px;background:var(--background);color:var(--foreground)}
+.research-controls button {height:40px;gap:8px}
+.research-note {margin-top:13px;color:var(--muted-foreground);font-size:11px;line-height:1.55}
+.research-rating {display:flex;align-items:baseline;gap:14px;margin-top:20px;padding:16px;background:var(--agent-surface);border:1px solid var(--border);border-radius:6px}
+.research-rating>span {font-size:11px;color:var(--muted-foreground)}
+.research-rating strong {font-size:23px;font-family:var(--font-mono)}
+.research-reports {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
+.research-reports details,.research-provenance {min-width:0;padding:12px;background:var(--background);border:1px solid var(--border);border-radius:6px}
+.research-reports summary,.research-provenance summary {cursor:pointer;font-size:12px;font-weight:600}
+.research-reports pre,.research-provenance pre {margin:12px 0 0;max-height:420px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;color:var(--muted-foreground);font:11px/1.6 var(--font-mono)}
+.research-provenance {margin-top:9px}
+@media(max-width:760px) {.research-section {padding:14px;margin:18px 0}.research-header {align-items:flex-start}.research-controls {grid-template-columns:1fr 1fr}.research-controls label:nth-child(3) {grid-column:1}.research-controls button {grid-column:2;grid-row:2}.research-rating {flex-wrap:wrap;gap:8px 12px}.research-rating strong {width:100%;order:1}.research-reports {grid-template-columns:1fr}}
+
+/* Trading Assistant semantic roles and browser analyst desk */
+:root {--agent-bullish:var(--positive);--agent-bearish:var(--negative);--agent-neutral:var(--muted-foreground);--feed-live:var(--positive);--feed-simulated:var(--warning);--agent-surface:color-mix(in oklab,var(--primary) 3%,var(--card));}
+.asset-feed-tag,.asset-result-source {font-family:var(--font-mono);font-size:9px;letter-spacing:.04em;color:var(--muted-foreground);white-space:nowrap}
+.asset-result-source {display:inline-flex;align-items:center;gap:5px}
+.feed-field {height:41px;display:flex;align-items:center;gap:9px;padding:0 12px;border:1px solid var(--border);border-radius:6px;background:var(--card);font-size:12px;color:var(--foreground)}
+.feed-dot-simulated {background:var(--feed-simulated)}
+.agent-desk {margin-top:20px;padding:17px;background:var(--agent-surface);border:1px solid var(--border);border-radius:8px}
+.agent-desk-head {display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:15px}
+.agent-desk-head h2 {font-size:14px;font-weight:650}
+.agent-desk-head p {margin-top:5px;color:var(--muted-foreground);font-size:11px;line-height:1.5}
+.agent-state {display:inline-flex;align-items:center;gap:7px;padding:5px 8px;border:1px solid var(--border);border-radius:999px;color:var(--muted-foreground);font-size:10px;white-space:nowrap}
+.agent-state .status-dot {background:var(--muted-foreground)}
+.agent-state-running .status-dot {background:var(--primary);animation:agent-pulse 1s ease-in-out infinite alternate}
+.agent-cards {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.agent-card {min-width:0;padding:12px;background:var(--card);border:1px solid var(--border);border-radius:6px}
+.agent-card>div {display:flex;justify-content:space-between;align-items:center;gap:8px}
+.agent-card>div strong {font-size:11px;font-weight:600}
+.agent-card>div span {font-size:9px;color:var(--muted-foreground);text-align:right}
+.agent-card>p {margin-top:10px;color:var(--muted-foreground);font-size:10px;line-height:1.55}
+.agent-stance {display:inline-block;margin-top:9px;font-family:var(--font-mono);font-size:9px;letter-spacing:.06em}
+.agent-stance.bullish {color:var(--agent-bullish)}
+.agent-stance.bearish {color:var(--agent-bearish)}
+.agent-stance.neutral {color:var(--agent-neutral)}
+.agent-empty,.agent-consensus {color:var(--muted-foreground);font-size:10px;line-height:1.6}
+.agent-empty {grid-column:1/-1;padding:14px 4px}
+.agent-consensus {margin-top:12px;padding-top:10px;border-top:1px solid var(--border)}
+@keyframes agent-pulse {to {opacity:.35;box-shadow:0 0 0 4px color-mix(in oklab,var(--primary) 12%,transparent)}}
+@media(max-width:760px) {.agent-desk {padding:14px}.agent-cards {grid-template-columns:1fr}.agent-card>p {font-size:11px}.asset-feed-tag {font-size:8px}}
