@@ -1,144 +1,19 @@
 @import "tailwindcss" source(none);
-@source "../src";
 @import "tw-animate-css";
-
+@source "../src";
 @custom-variant dark (&:is(.dark *));
-
-/*
- * Design system definition.
- *
- * The @theme inline block maps CSS custom properties to Tailwind utility
- * classes (e.g. --color-primary -> bg-primary, text-primary).
- *
- * The :root and .dark blocks define the actual color values using oklch.
- * All colors MUST use oklch format.
- *
- * To add a new semantic color:
- * 1. Add the variable to :root (light value) and .dark (dark value)
- * 2. Register it in @theme inline as --color-<name>: var(--<name>)
- */
-
 @theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --radius-2xl: calc(var(--radius) + 8px);
-  --radius-3xl: calc(var(--radius) + 12px);
-  --radius-4xl: calc(var(--radius) + 16px);
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-ring-offset-background: var(--background);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
+ --color-background:var(--background); --color-foreground:var(--foreground); --color-card:var(--card); --color-card-foreground:var(--foreground); --color-popover:var(--card); --color-popover-foreground:var(--foreground); --color-primary:var(--primary); --color-primary-foreground:var(--primary-foreground); --color-secondary:var(--secondary); --color-secondary-foreground:var(--foreground); --color-muted:var(--secondary); --color-muted-foreground:var(--muted-foreground); --color-accent:var(--accent); --color-accent-foreground:var(--foreground); --color-destructive:var(--destructive); --color-destructive-foreground:var(--foreground); --color-border:var(--border); --color-input:var(--border); --color-ring:var(--primary); --color-positive:var(--positive); --color-negative:var(--negative); --radius-sm:4px; --radius-md:6px; --radius-lg:8px; --font-sans:'DM Sans',sans-serif; --font-mono:'JetBrains Mono',monospace;
 }
-
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.984 0.003 247.858);
-  --sidebar-foreground: oklch(0.129 0.042 264.695);
-  --sidebar-primary: oklch(0.208 0.042 265.755);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.968 0.007 247.896);
-  --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
-  --sidebar-border: oklch(0.929 0.013 255.508);
-  --sidebar-ring: oklch(0.704 0.04 256.788);
+ --background:oklch(0.155 0.004 260); --foreground:oklch(0.94 0.004 260); --card:oklch(0.187 0.005 260); --secondary:oklch(0.225 0.006 260); --accent:oklch(0.26 0.008 260); --primary:oklch(0.83 0.15 164); --primary-foreground:oklch(0.19 0.035 165); --muted-foreground:oklch(0.65 0.012 260); --border:oklch(0.285 0.007 260); --positive:oklch(0.8 0.15 163); --negative:oklch(0.71 0.16 23); --destructive:var(--negative); --warning:oklch(0.8 0.13 80); --chart-fast:oklch(0.73 0.12 232); --chart-slow:oklch(0.8 0.13 80); --chart-grid:oklch(0.255 0.005 260); --chart-band:oklch(0.43 0.025 260); --scrim:oklch(0.08 0.004 260 / 80%); --shadow-overlay:0 24px 90px var(--scrim); --radius:8px;
 }
-
-.dark {
-  --background: oklch(0.129 0.042 264.695);
-  --foreground: oklch(0.984 0.003 247.858);
-  --card: oklch(0.208 0.042 265.755);
-  --card-foreground: oklch(0.984 0.003 247.858);
-  --popover: oklch(0.208 0.042 265.755);
-  --popover-foreground: oklch(0.984 0.003 247.858);
-  --primary: oklch(0.929 0.013 255.508);
-  --primary-foreground: oklch(0.208 0.042 265.755);
-  --secondary: oklch(0.279 0.041 260.031);
-  --secondary-foreground: oklch(0.984 0.003 247.858);
-  --muted: oklch(0.279 0.041 260.031);
-  --muted-foreground: oklch(0.704 0.04 256.788);
-  --accent: oklch(0.279 0.041 260.031);
-  --accent-foreground: oklch(0.984 0.003 247.858);
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.551 0.027 264.364);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.208 0.042 265.755);
-  --sidebar-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.279 0.041 260.031);
-  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.551 0.027 264.364);
-}
-
-@layer base {
-  * {
-    border-color: var(--color-border);
-  }
-
-  body {
-    background-color: var(--color-background);
-    color: var(--color-foreground);
-  }
-}
+* {border-color:var(--border);letter-spacing:0;box-sizing:border-box}
+body {margin:0;background:var(--background);color:var(--foreground);font-family:var(--font-sans);font-size:14px;-webkit-font-smoothing:antialiased}
+button,input,select {font:inherit} button,a,input,select {touch-action:manipulation} button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible {outline:2px solid var(--primary);outline-offset:3px} button {cursor:pointer} h1,h2,h3,p {margin:0} svg {flex-shrink:0} .mono {font-family:var(--font-mono);font-variant-numeric:tabular-nums} .positive {color:var(--positive)} .negative {color:var(--negative)} .muted {color:var(--muted-foreground)} .small {font-size:12px} .terminal-button {border-radius:6px;font-weight:600;box-shadow:none;transition:background 160ms,color 160ms,border-color 160ms} .terminal-button-primary {background:var(--primary);color:var(--primary-foreground)} .terminal-button-primary:hover {background:color-mix(in oklab,var(--primary) 88%,var(--foreground))} .terminal-button-control {background:var(--secondary);color:var(--foreground);border:1px solid var(--border)} .terminal-button-control:hover {background:var(--accent)} .terminal-button-nav {color:var(--muted-foreground);background:transparent} .terminal-button-nav:hover {color:var(--foreground);background:var(--secondary)} .terminal-button-call {background:color-mix(in oklab,var(--positive) 12%,var(--card));color:var(--positive);border:1px solid color-mix(in oklab,var(--positive) 35%,var(--border))} .terminal-button-call:hover {background:color-mix(in oklab,var(--positive) 23%,var(--card))} .terminal-button-put {background:color-mix(in oklab,var(--negative) 12%,var(--card));color:var(--negative);border:1px solid color-mix(in oklab,var(--negative) 35%,var(--border))} .terminal-button-put:hover {background:color-mix(in oklab,var(--negative) 23%,var(--card))}
+.app-header {height:78px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 30px;background:var(--card);gap:20px} .brand {display:flex;align-items:center;gap:11px;flex-shrink:0} .brand-mark {width:35px;height:35px;color:var(--primary);display:grid;place-items:center} .brand-mark svg {width:34px;height:34px;stroke-width:2.5} .brand-title {font-size:22px;font-weight:750;line-height:1.1} .brand-caption {font-size:10px;color:var(--muted-foreground);margin-top:5px} .header-nav {display:flex;align-items:stretch;align-self:stretch;gap:14px} .header-nav .terminal-button {position:relative;border-radius:0;padding:0 11px} .header-nav .selected {color:var(--foreground)} .header-nav .selected:after {position:absolute;content:'';height:2px;bottom:0;left:10px;right:10px;background:var(--primary)} .header-end {display:flex;gap:18px;align-items:center} .paper-tag {display:inline-flex;gap:6px;align-items:center;border:1px solid color-mix(in oklab,var(--warning) 28%,var(--border));background:color-mix(in oklab,var(--warning) 6%,var(--card));color:var(--warning);font-size:11px;padding:5px 9px;border-radius:4px;white-space:nowrap} .header-balance {border-left:1px solid var(--border);padding-left:18px} .header-balance strong {font-size:16px;display:block;margin-top:3px} .profile {width:34px;height:34px;background:var(--secondary);border:1px solid var(--border);border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:600}
+.workspace {max-width:1550px;margin:0 auto;padding:27px 30px 0} .intro {display:flex;align-items:center;justify-content:space-between;margin-bottom:25px;gap:20px} .intro h1 {font-size:25px;font-weight:650;margin-bottom:7px} .intro p {font-size:13px;color:var(--muted-foreground)} .session {display:flex;gap:9px;align-items:center;color:var(--muted-foreground);font-size:12px} .status-dot {width:6px;height:6px;border-radius:50%;background:var(--positive);display:inline-block;flex-shrink:0} .section-heading {display:flex;justify-content:space-between;align-items:center;margin-bottom:12px} .section-heading h2 {font-size:13px;font-weight:600} .section-heading .terminal-button {min-height:30px;padding:0;font-size:12px;color:var(--muted-foreground)} .asset-strip {display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin-bottom:25px} .asset-tile {display:flex;flex-direction:column;align-items:stretch;height:104px;padding:13px 12px;white-space:normal;text-align:left;background:var(--card);border:1px solid var(--border);border-radius:7px;gap:12px;font-weight:500;overflow:hidden} .asset-tile:hover {background:var(--secondary)} .asset-tile.active {border-color:var(--primary);background:color-mix(in oklab,var(--primary) 5%,var(--card))} .asset-top {display:flex;align-items:center;gap:8px;min-width:0;font-size:12px} .asset-icon {width:26px;height:26px;background:var(--secondary);color:var(--foreground);border-radius:50%;display:grid;place-items:center;font-size:10px;flex-shrink:0} .asset-name {overflow:hidden;text-overflow:ellipsis;white-space:nowrap} .asset-bottom {display:flex;justify-content:space-between;align-items:center;gap:5px;font-size:11px} .asset-bottom strong {font-weight:500;font-size:13px} .asset-bottom .mono {font-size:11px} .asset-sub {font-size:10px;color:var(--muted-foreground);margin-top:3px} .main-grid {display:grid;grid-template-columns:minmax(0,1fr) 326px;gap:20px;align-items:start} .chart-tool {background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;min-width:0} .chart-header {display:flex;align-items:center;justify-content:space-between;padding:20px 20px 16px;gap:12px} .chart-asset {display:flex;align-items:center;gap:10px} .chart-asset .asset-icon {width:34px;height:34px;font-size:11px} .chart-asset h2 {font-size:16px;font-weight:650} .chart-asset p {font-size:11px;color:var(--muted-foreground);margin-top:5px} .chart-header-price {text-align:right} .chart-header-price strong {display:block;font-size:21px;font-weight:500;margin-bottom:5px} .chart-header-price span {font-size:11px} .chart-toolbar {border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:7px 14px;display:flex;justify-content:space-between;align-items:center;gap:6px} .toolbar-group {display:flex;gap:5px;align-items:center} .chart-toolbar .terminal-button {height:30px;min-width:30px;font-size:11px;padding:0 8px} .chart-toolbar .selected {background:var(--secondary);color:var(--primary)} .toolbar-divider {height:18px;width:1px;background:var(--border);margin:0 6px} .chart-canvas {position:relative;height:360px;min-width:0} .chart-canvas canvas {width:100%;height:100%;display:block} .chart-source {position:absolute;left:20px;top:16px;font-size:10px;display:flex;gap:14px;align-items:center;color:var(--muted-foreground)} .chart-source .legend {display:flex;gap:5px;align-items:center} .legend-line {width:10px;height:2px;background:var(--chart-fast)} .legend-line.slow {background:var(--chart-slow)} .chart-watermark {position:absolute;left:20px;bottom:62px;font-size:17px;font-weight:700;color:var(--border);pointer-events:none} .chart-foot {padding:11px 18px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:10px;color:var(--muted-foreground)} .chart-foot span {display:flex;align-items:center;gap:6px} .configuration {padding:22px 0 0} .configuration h2 {font-size:14px;font-weight:600} .configuration-head {display:flex;justify-content:space-between;align-items:center;margin-bottom:16px} .configuration-head span {font-size:11px;color:var(--muted-foreground)} .form-grid {display:grid;grid-template-columns:1fr 1fr;gap:16px} .field-label {display:block;color:var(--muted-foreground);font-size:12px;margin-bottom:8px} .select-field {width:100%;height:41px;border:1px solid var(--border);border-radius:6px;background:var(--card);color:var(--foreground);padding:0 12px;cursor:pointer} .strategy-title {display:flex;align-items:center;justify-content:space-between;margin:21px 0 11px;font-size:12px;color:var(--muted-foreground)} .strategy-grid {display:grid;grid-template-columns:repeat(4,1fr);gap:9px} .strategy {display:flex;gap:9px;align-items:center;border:1px solid var(--border);border-radius:6px;padding:11px 9px;cursor:pointer;font-size:11px;background:var(--card)} .strategy input {accent-color:var(--primary);width:14px;height:14px;flex-shrink:0} .strategy.checked {border-color:color-mix(in oklab,var(--primary) 30%,var(--border))} .scan-button {width:100%;height:46px;margin-top:17px;font-size:13px} .scan-note {text-align:center;color:var(--muted-foreground);font-size:10px;margin-top:9px} .signal-panel {border:1px solid var(--border);border-radius:8px;background:var(--card);overflow:hidden} .panel-heading {padding:17px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-weight:600;font-size:13px} .panel-heading span {font-size:10px;color:var(--muted-foreground);font-weight:400} .signal-content {padding:18px} .signal-result {display:flex;align-items:center;gap:12px;margin:5px 0 18px} .signal-icon {display:grid;place-items:center;width:46px;height:46px;border-radius:8px;background:var(--secondary);color:var(--muted-foreground)} .signal-icon.positive {background:color-mix(in oklab,var(--positive) 12%,var(--card));color:var(--positive)} .signal-icon.negative {background:color-mix(in oklab,var(--negative) 12%,var(--card));color:var(--negative)} .signal-result h3 {font-size:24px;font-weight:650} .signal-result p {font-size:11px;color:var(--muted-foreground);margin-top:3px} .confidence-row {display:flex;justify-content:space-between;font-size:11px;margin-bottom:9px;color:var(--muted-foreground)} .confidence-meter {height:5px;width:100%;appearance:none;border:0;background:var(--secondary);display:block} .confidence-meter::-webkit-progress-bar {background:var(--secondary);border-radius:4px} .confidence-meter::-webkit-progress-value {background:var(--primary);border-radius:4px} .signal-label {display:flex;align-items:center;gap:6px;color:var(--muted-foreground);font-size:10px;margin-top:10px} .indicators {border-top:1px solid var(--border);margin-top:19px;padding-top:18px} .subheading {font-size:11px;font-weight:600;margin-bottom:13px;display:flex;justify-content:space-between} .indicator-row {display:flex;justify-content:space-between;gap:10px;font-size:11px;padding:7px 0;color:var(--muted-foreground)} .indicator-row strong {font-weight:400;color:var(--foreground);font-family:var(--font-mono);font-size:10px} .reason-list {margin-top:18px;border-top:1px solid var(--border);padding-top:16px} .reason {display:flex;gap:8px;font-size:10px;line-height:1.6;color:var(--muted-foreground);margin-bottom:8px} .reason svg {width:12px;height:12px;margin-top:2px;color:var(--primary)} .execution {border-top:1px solid var(--border);padding:18px} .execution-heading {display:flex;justify-content:space-between;font-size:11px;margin-bottom:12px} .execution-heading span {color:var(--muted-foreground);font-size:10px} .stake-row {display:grid;grid-template-columns:repeat(4,1fr);gap:7px} .stake-row .terminal-button {height:33px;font-size:11px;padding:0} .stake-row .selected {border-color:var(--primary);color:var(--primary);background:color-mix(in oklab,var(--primary) 7%,var(--card))} .trade-actions {display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:13px} .trade-actions .terminal-button {height:60px;display:flex;flex-direction:column;gap:5px;font-size:12px} .trade-actions .terminal-button div {display:flex;gap:7px;align-items:center} .trade-actions .terminal-button span {font-size:10px;font-weight:400} .execution-note {display:flex;justify-content:center;gap:5px;margin-top:11px;font-size:10px;color:var(--muted-foreground)} .active-trade {margin-bottom:15px;padding-bottom:13px;border-bottom:1px solid var(--border);font-size:12px;display:flex;justify-content:space-between} .error-message {font-size:11px;color:var(--negative);margin-top:10px;line-height:1.5} .history-section {margin-top:25px;border-top:1px solid var(--border)} .history-header {display:flex;justify-content:space-between;align-items:center;padding:14px 0} .history-tabs {display:flex;gap:18px} .history-tabs .terminal-button {border-radius:0;padding:0;height:35px;font-size:12px} .history-tabs .selected {color:var(--foreground);border-bottom:2px solid var(--primary)} .history-header>.terminal-button {font-size:11px} .table-wrap {overflow:auto} .history-table {width:100%;border-collapse:collapse;font-size:12px;white-space:nowrap} .history-table th {text-align:left;font-size:10px;font-weight:400;color:var(--muted-foreground);background:var(--card);padding:12px 16px} .history-table td {padding:15px 16px;border-bottom:1px solid var(--border)} .history-table th:last-child,.history-table td:last-child {text-align:right} .empty-history {height:113px;display:flex;gap:10px;align-items:center;justify-content:center;flex-direction:column;color:var(--muted-foreground);font-size:12px} .empty-history svg {color:var(--border)} .risk-grid {display:grid;grid-template-columns:repeat(4,1fr);gap:20px;padding:20px 0} .risk-grid p {color:var(--muted-foreground);font-size:11px;margin-bottom:8px} .risk-grid strong {font-size:14px;font-weight:500} .footer {display:flex;justify-content:space-between;align-items:center;gap:20px;border-top:1px solid var(--border);margin-top:22px;padding:17px 0;font-size:10px;color:var(--muted-foreground)} .footer p {max-width:780px;line-height:1.6} .footer span {white-space:nowrap} .mobile-dock {display:none} .dialog-content {background:var(--card);border:1px solid var(--border);color:var(--foreground);max-width:460px;box-shadow:var(--shadow-overlay)} .asset-search {display:flex;align-items:center;gap:10px;border:1px solid var(--border);padding:0 12px;border-radius:6px;margin-top:8px} .asset-search input {background:transparent;border:0;outline:none;height:42px;width:100%;color:var(--foreground)} .asset-results {max-height:400px;overflow:auto;display:flex;flex-direction:column;gap:5px} .asset-result {width:100%;padding:10px;min-height:49px;display:flex;justify-content:space-between;white-space:normal;text-align:left} .asset-result>span {display:flex;gap:10px;align-items:center} .asset-result.active {background:var(--secondary);color:var(--primary)} .modal-note {font-size:12px;line-height:1.7;color:var(--muted-foreground)} .spinner {animation:spin 1s linear infinite} @keyframes spin {to{transform:rotate(360deg)}}
+@media(min-width:1450px) {.chart-canvas {height:430px} .main-grid {grid-template-columns:minmax(0,1fr) 350px} .asset-tile {height:110px;padding:15px} .asset-top {font-size:13px} .workspace {padding-top:32px}}
+@media(max-width:1100px) {.app-header {padding:0 20px} .header-nav {gap:4px} .header-nav .terminal-button {font-size:12px;padding:0 8px} .header-end {gap:10px} .profile {display:none} .workspace {padding:24px 20px 0} .main-grid {grid-template-columns:minmax(0,1fr) 300px;gap:16px} .asset-strip {grid-template-columns:repeat(3,1fr)} .asset-tile {height:89px} .strategy-grid {grid-template-columns:repeat(2,1fr)} .asset-bottom strong {font-size:14px}}
+@media(max-width:760px) {.app-header {height:68px;padding:0 16px;gap:12px} .header-nav,.header-end>.paper-tag,.header-end>.terminal-button,.profile {display:none} .header-balance {border:0;padding:0;text-align:right} .header-balance strong {font-size:14px} .brand-title {font-size:20px} .brand-caption {font-size:9px} .workspace {padding:21px 16px 86px} .intro {margin-bottom:20px;align-items:flex-start} .intro h1 {font-size:23px} .intro p {font-size:12px;max-width:230px;line-height:1.6} .session {font-size:10px;margin-top:7px;gap:5px} .session .session-time {display:none} .asset-strip {grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:20px} .asset-tile {height:84px;padding:11px} .asset-strip>.asset-tile:nth-child(n+5) {display:none} .asset-top {font-size:11px} .asset-bottom {font-size:10px} .main-grid {grid-template-columns:1fr;gap:24px} .chart-header {padding:16px 12px} .chart-asset h2 {font-size:14px} .chart-header-price strong {font-size:18px} .chart-header-price span {font-size:10px} .chart-asset .asset-icon {width:29px;height:29px} .chart-canvas {height:315px} .chart-toolbar {padding:6px 8px} .chart-source {left:12px;font-size:9px;gap:10px} .chart-foot {padding:10px 12px;font-size:9px} .configuration {padding-top:19px} .select-field {font-size:13px} .form-grid {gap:10px} .strategy-title {font-size:11px} .strategy {padding:12px;font-size:12px} .scan-button {height:48px} .signal-result h3 {font-size:27px} .signal-content {padding:20px} .indicator-row {font-size:12px;padding:9px 0} .indicator-row strong {font-size:11px} .reason {font-size:12px} .trade-actions .terminal-button {height:65px;font-size:14px} .stake-row .terminal-button {height:40px;font-size:12px} .history-table td,.history-table th {padding:12px} .history-table {font-size:11px} .history-header {gap:8px} .history-tabs {gap:15px} .history-header>.terminal-button {font-size:10px;padding:0 8px} .risk-grid {grid-template-columns:1fr 1fr;gap:24px} .footer {display:block;margin-top:20px;font-size:10px} .footer span {display:block;margin-top:12px} .mobile-dock {display:flex;justify-content:space-around;position:fixed;bottom:0;left:0;right:0;height:67px;padding-bottom:env(safe-area-inset-bottom);background:var(--card);border-top:1px solid var(--border);z-index:30} .mobile-dock .terminal-button {display:flex;flex-direction:column;gap:5px;font-size:10px;min-width:65px;height:61px} .mobile-dock .terminal-button svg {width:18px;height:18px} .mobile-dock .selected {color:var(--primary)} }
+@media(prefers-reduced-motion:reduce) {*,*:before,*:after {animation:none!important;transition:none!important;scroll-behavior:auto!important}}
