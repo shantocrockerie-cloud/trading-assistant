@@ -198,3 +198,22 @@ export function tradeError(stake:number,balance:number,count:number,lastTrade:nu
  if (now-lastTrade<60000) return 'Please wait 60 seconds between paper trades.';
  return '';
 }
+
+/** Public Binance symbols for assets that have a free live feed. */
+export const liveSymbols: Record<string, string> = {
+ 'BTC / USDT': 'BTCUSDT', 'ETH / USDT': 'ETHUSDT', 'BNB / USDT': 'BNBUSDT', 'EUR / USDT': 'EURUSDT',
+};
+export async function fetchLiveCandles(assetName: string, timeframe: number): Promise<Candle[] | null> {
+ const symbol = liveSymbols[assetName];
+ if (!symbol) return null;
+ const path = `/api/v3/klines?symbol=${symbol}&interval=${timeframe}m&limit=100`;
+ for (const host of ['https://data-api.binance.vision', 'https://api.binance.com']) {
+  try {
+   const res = await fetch(host + path);
+   if (!res.ok) continue;
+   const rows = (await res.json()) as [number, string, string, string, string][];
+   if (rows.length >= 30) return rows.map((r) => ({ timestamp: r[0], open: +r[1], high: +r[2], low: +r[3], close: +r[4] }));
+  } catch { /* try next host */ }
+ }
+ throw new Error('Live feed unavailable');
+}
