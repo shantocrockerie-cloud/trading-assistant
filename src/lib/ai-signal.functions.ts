@@ -14,7 +14,7 @@ export type AiSignal = { direction: 'CALL' | 'PUT' | 'WAIT'; confidence: number;
 export const analyzeWithAi = createServerFn({ method: 'POST' })
   .inputValidator((d: unknown) => inputSchema.parse(d))
   .handler(async ({ data }): Promise<AiSignal> => {
-    const apiKey = process.env.LOVABLE_API_KEY;
+    const apiKey = process.env['LOVABLE_API_KEY'];
     if (!apiKey) return { direction: 'WAIT', confidence: 0, rationale: '', error: 'AI is not configured.' };
     const { createOpenAI } = await import('@ai-sdk/openai');
     const { streamText, Output, NoObjectGeneratedError } = await import('ai');
