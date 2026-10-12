@@ -4,7 +4,7 @@ import { Activity, ArrowDown, ArrowDownToLine, ArrowUp, ArrowUpRight, AudioLines
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { PriceChart } from '@/components/trading/price-chart';
-import { assets, demoCandles, fetchLiveCandles, liveSymbols, makeSignal, calcIndicators, tradeError, type Signal, type Trade, type Candle } from '@/lib/trading';
+import { assets, demoCandles, fetchLiveCandles, liveSymbols, makeSignal, calcIndicators, tradeError, type Signal, type Trade, type Candle, type Candle } from '@/lib/trading';
 
 export const Route = createFileRoute('/')({
  head:()=>({meta:[{title:'CODEX AI Market — Paper Trading Terminal'},{name:'description',content:'Analyze simulated markets, compare technical indicators and practice paper trading in the CODEX terminal.'},{property:'og:title',content:'CODEX AI Market — Paper Trading Terminal'},{property:'og:description',content:'A focused workspace for simulated market analysis and paper trading.'},{property:'og:type',content:'website'},{name:'twitter:card',content:'summary_large_image'}]}),
