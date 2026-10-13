@@ -195,15 +195,28 @@ function Terminal() {
           outcome = "unavailable";
         }
       } else {
-        exit = demoCandles(tradeAsset.base, trade.timeframe, trade.id % 1_000_000 + 1).at(-1)!.close;
+        exit = demoCandles(tradeAsset.base, trade.timeframe, (trade.id % 1_000_000) + 1).at(
+          -1,
+        )!.close;
       }
       if (outcome !== "unavailable") {
-        outcome = exit === trade.entry ? "flat" :
-          (trade.direction === "CALL" ? exit > trade.entry : exit < trade.entry) ? "won" : "lost";
+        outcome =
+          exit === trade.entry
+            ? "flat"
+            : (trade.direction === "CALL" ? exit > trade.entry : exit < trade.entry)
+              ? "won"
+              : "lost";
       }
-      const profit = outcome === "won" ? (trade.stake * trade.payout) / 100 : outcome === "lost" ? -trade.stake : 0;
+      const profit =
+        outcome === "won"
+          ? (trade.stake * trade.payout) / 100
+          : outcome === "lost"
+            ? -trade.stake
+            : 0;
       setBalance((balanceNow) => balanceNow + trade.stake + profit);
-      setTrades((list) => list.map((item) => item.id === trade.id ? { ...item, exit, profit, outcome } : item));
+      setTrades((list) =>
+        list.map((item) => (item.id === trade.id ? { ...item, exit, profit, outcome } : item)),
+      );
       setActiveTrade(null);
       setSettlingTradeId(null);
     })();
@@ -234,7 +247,10 @@ function Terminal() {
     setResearchBusy(true);
     setResearchError("");
     setResearchResult(null);
-    const endpoint = (import.meta.env.VITE_TRADINGAGENTS_API || "http://localhost:4001").replace(/\/$/, "");
+    const endpoint = (import.meta.env.VITE_TRADINGAGENTS_API || "http://localhost:4001").replace(
+      /\/$/,
+      "",
+    );
     try {
       const response = await fetch(`${endpoint}/api/research`, {
         method: "POST",
@@ -246,10 +262,13 @@ function Terminal() {
         }),
       });
       const body = await response.json();
-      if (!response.ok) throw new Error(body.detail || `Research service returned ${response.status}.`);
+      if (!response.ok)
+        throw new Error(body.detail || `Research service returned ${response.status}.`);
       setResearchResult(body as FrameworkResearch);
     } catch (cause) {
-      setResearchError(cause instanceof Error ? cause.message : "Could not reach TradingAgents research service.");
+      setResearchError(
+        cause instanceof Error ? cause.message : "Could not reach TradingAgents research service.",
+      );
     } finally {
       setResearchBusy(false);
     }
@@ -327,12 +346,15 @@ function Terminal() {
       setAgentsRunning(false);
       setAiRunning(true);
       if (hasLiveFeed && !freshLive) {
-        setError("Binance could not be reached. Analysis used clearly labeled session simulation candles.");
+        setError(
+          "Binance could not be reached. Analysis used clearly labeled session simulation candles.",
+        );
       }
       const ai = await aiTask;
       setAiRunning(false);
       if (ai.configured && !ai.error) {
-        const stance = ai.direction === "CALL" ? "BULLISH" : ai.direction === "PUT" ? "BEARISH" : "NEUTRAL";
+        const stance =
+          ai.direction === "CALL" ? "BULLISH" : ai.direction === "PUT" ? "BEARISH" : "NEUTRAL";
         setAgentReports((current) => [
           ...current,
           {
@@ -539,8 +561,8 @@ function Terminal() {
                 <div className="chart-header-price">
                   <strong className="mono">{price.toFixed(asset.precision)}</strong>
                   <span className={priceChangePct >= 0 ? "positive" : "negative"}>
-                    {priceChangePct >= 0 ? "+" : ""}{priceChangePct.toFixed(2)}%
-                    <span className="muted"> across chart window</span>
+                    {priceChangePct >= 0 ? "+" : ""}
+                    {priceChangePct.toFixed(2)}%<span className="muted"> across chart window</span>
                   </span>
                 </div>
               </div>
@@ -613,7 +635,12 @@ function Terminal() {
               <div className="chart-canvas">
                 <div className="chart-source">
                   <span>
-                    {isLive ? "LIVE · BINANCE" : sourceStatus === "loading" ? "CONNECTING · BINANCE" : "SIMULATED"} · {timeframe}M
+                    {isLive
+                      ? "LIVE · BINANCE"
+                      : sourceStatus === "loading"
+                        ? "CONNECTING · BINANCE"
+                        : "SIMULATED"}{" "}
+                    · {timeframe}M
                   </span>
                   {showIndicators && (
                     <>
@@ -635,7 +662,7 @@ function Terminal() {
                   line={line}
                   zoom={zoom}
                   expanded={false}
-                    source={isLive ? `Live Binance ${liveSymbols[asset.name]}` : "Simulated"}
+                  source={isLive ? `Live Binance ${liveSymbols[asset.name]}` : "Simulated"}
                 />
                 <span className="chart-watermark">TRADING ASSISTANT</span>
               </div>
@@ -668,7 +695,11 @@ function Terminal() {
                   <span className="field-label">Price source</span>
                   <div className="feed-field">
                     <span className={`status-dot ${isLive ? "" : "feed-dot-simulated"}`} />
-                    {isLive ? `Binance · ${liveSymbols[asset.name]}` : hasLiveFeed && sourceStatus === "loading" ? "Connecting to Binance…" : "Session simulation"}
+                    {isLive
+                      ? `Binance · ${liveSymbols[asset.name]}`
+                      : hasLiveFeed && sourceStatus === "loading"
+                        ? "Connecting to Binance…"
+                        : "Session simulation"}
                   </div>
                 </div>
                 <div>
@@ -721,7 +752,10 @@ function Terminal() {
                 {scanning ? scanStep || "Analyzing…" : "Scan & generate signal"}
                 {!scanning && <ArrowUpRight />}
               </Button>
-              <p className="scan-note">Four technical agents run locally. An optional server configured AI analyst can add a fifth review; no news or fundamentals feed is connected.</p>
+              <p className="scan-note">
+                Four technical agents run locally. An optional server configured AI analyst can add
+                a fifth review; no news or fundamentals feed is connected.
+              </p>
             </section>
             <section className="agent-desk" aria-labelledby="agent-desk-title">
               <div className="agent-desk-head">
@@ -729,24 +763,65 @@ function Terminal() {
                   <h2 id="agent-desk-title">Analyst agents</h2>
                   <p>Independent reads from the selected {timeframe}m candle series</p>
                 </div>
-                <span className={`agent-state ${agentsRunning || aiRunning ? "agent-state-running" : ""}`}>
+                <span
+                  className={`agent-state ${agentsRunning || aiRunning ? "agent-state-running" : ""}`}
+                >
                   <span className="status-dot" />
-                  {agentsRunning ? "Analyzing" : aiRunning ? "AI reviewing" : agentReports.length ? `${agentReports.length} reports` : "Ready"}
+                  {agentsRunning
+                    ? "Analyzing"
+                    : aiRunning
+                      ? "AI reviewing"
+                      : agentReports.length
+                        ? `${agentReports.length} reports`
+                        : "Ready"}
                 </span>
               </div>
               <div className="agent-cards">
-                {agentReports.length ? agentReports.map((report) => (
-                  <article className="agent-card" key={report.name}>
-                    <div><strong>{report.name}</strong><span>{report.focus}</span></div>
-                    <span className={`agent-stance ${report.stance.toLowerCase()}`}>{report.stance}</span>
-                    <p>{report.finding}</p>
-                  </article>
-                )) : <p className="agent-empty">{agentsRunning ? "Trend, momentum, range and price action agents are reviewing the candles…" : "Run a scan to get four independent technical reviews."}</p>}
+                {agentReports.length ? (
+                  agentReports.map((report) => (
+                    <article className="agent-card" key={report.name}>
+                      <div>
+                        <strong>{report.name}</strong>
+                        <span>{report.focus}</span>
+                      </div>
+                      <span className={`agent-stance ${report.stance.toLowerCase()}`}>
+                        {report.stance}
+                      </span>
+                      <p>{report.finding}</p>
+                    </article>
+                  ))
+                ) : (
+                  <p className="agent-empty">
+                    {agentsRunning
+                      ? "Trend, momentum, range and price action agents are reviewing the candles…"
+                      : "Run a scan to get four independent technical reviews."}
+                  </p>
+                )}
               </div>
-              {aiRunning && <p className="agent-consensus">Optional language model is reviewing the same candle data in the background…</p>}
-              {aiError && <p className="agent-consensus" role="status">{aiError}</p>}
-              {agentReports.length > 0 && <p className="agent-consensus">The four technical agents use fixed rules. The optional AI report is model generated. Neither output is a validated forecast or investment advice.</p>}
-              <p className="agent-consensus">To enable the optional AI agent, configure an OpenAI-compatible chat provider on the server. Browse providers at <a href="https://free-llm.com" target="_blank" rel="noreferrer">Free-LLM directory</a>; provider availability and free-tier limits change.</p>
+              {aiRunning && (
+                <p className="agent-consensus">
+                  Optional language model is reviewing the same candle data in the background…
+                </p>
+              )}
+              {aiError && (
+                <p className="agent-consensus" role="status">
+                  {aiError}
+                </p>
+              )}
+              {agentReports.length > 0 && (
+                <p className="agent-consensus">
+                  The four technical agents use fixed rules. The optional AI report is model
+                  generated. Neither output is a validated forecast or investment advice.
+                </p>
+              )}
+              <p className="agent-consensus">
+                To enable the optional AI agent, configure an OpenAI-compatible chat provider on the
+                server. Browse providers at{" "}
+                <a href="https://free-llm.com" target="_blank" rel="noreferrer">
+                  Free-LLM directory
+                </a>
+                ; provider availability and free-tier limits change.
+              </p>
             </section>
           </div>
           <aside className="signal-panel" aria-label="Signal analysis and paper execution">
@@ -803,7 +878,18 @@ function Terminal() {
                 <div className="indicator-row">
                   <span>RSI (14)</span>
                   <strong>
-                    {indicators.rsi.toFixed(2)} <span className={indicators.rsi >= 55 ? "positive" : indicators.rsi <= 45 ? "negative" : "muted"}>{indicators.rsi >= 55 ? "↗" : indicators.rsi <= 45 ? "↘" : "·"}</span>
+                    {indicators.rsi.toFixed(2)}{" "}
+                    <span
+                      className={
+                        indicators.rsi >= 55
+                          ? "positive"
+                          : indicators.rsi <= 45
+                            ? "negative"
+                            : "muted"
+                      }
+                    >
+                      {indicators.rsi >= 55 ? "↗" : indicators.rsi <= 45 ? "↘" : "·"}
+                    </span>
                   </strong>
                 </div>
                 <div className="indicator-row">
@@ -913,30 +999,101 @@ function Terminal() {
           <div className="history-header research-header">
             <div>
               <h2 id="research-title">TradingAgents research</h2>
-              <p className="muted small">Run the upstream LangGraph analyst, debate, trader and risk workflow for a ticker and date.</p>
+              <p className="muted small">
+                Run the upstream LangGraph analyst, debate, trader and risk workflow for a ticker
+                and date.
+              </p>
             </div>
             <span className={`agent-state ${researchBusy ? "agent-state-running" : ""}`}>
               <span className="status-dot" />
-              {researchBusy ? "Framework running" : researchResult ? "Research complete" : "Backend required"}
+              {researchBusy
+                ? "Framework running"
+                : researchResult
+                  ? "Research complete"
+                  : "Backend required"}
             </span>
           </div>
           <div className="research-controls">
-            <label>Ticker<input aria-label="Research ticker" maxLength={20} value={researchTicker} onChange={(event) => setResearchTicker(event.target.value.toUpperCase())} placeholder="AAPL" /></label>
-            <label>Analysis date<input aria-label="Research analysis date" type="date" value={researchDate} max={new Date().toISOString().slice(0, 10)} onChange={(event) => setResearchDate(event.target.value)} /></label>
-            <label>Asset type<select aria-label="Research asset type" value={researchType} onChange={(event) => setResearchType(event.target.value as "stock" | "crypto")}><option value="stock">Stock</option><option value="crypto">Crypto</option></select></label>
-            <Button disabled={researchBusy || !researchTicker.trim() || !researchDate} onClick={() => void runFrameworkResearch()}>
+            <label>
+              Ticker
+              <input
+                aria-label="Research ticker"
+                maxLength={20}
+                value={researchTicker}
+                onChange={(event) => setResearchTicker(event.target.value.toUpperCase())}
+                placeholder="AAPL"
+              />
+            </label>
+            <label>
+              Analysis date
+              <input
+                aria-label="Research analysis date"
+                type="date"
+                value={researchDate}
+                max={new Date().toISOString().slice(0, 10)}
+                onChange={(event) => setResearchDate(event.target.value)}
+              />
+            </label>
+            <label>
+              Asset type
+              <select
+                aria-label="Research asset type"
+                value={researchType}
+                onChange={(event) => setResearchType(event.target.value as "stock" | "crypto")}
+              >
+                <option value="stock">Stock</option>
+                <option value="crypto">Crypto</option>
+              </select>
+            </label>
+            <Button
+              disabled={researchBusy || !researchTicker.trim() || !researchDate}
+              onClick={() => void runFrameworkResearch()}
+            >
               {researchBusy ? <LoaderCircle className="spinner" /> : <Sparkles />}
               {researchBusy ? "Agents researching…" : "Run research"}
             </Button>
           </div>
-          {researchError && <p className="error-message" role="alert">{researchError}. Start the optional Python service on port 4001 and configure its TradingAgents providers and data vendors.</p>}
-          {!researchResult && !researchError && <p className="research-note">Requires the optional Python research service and TradingAgents model and market-data credentials. This date-based research workflow is separate from the short-term candle scan above.</p>}
-          {researchResult && <div className="research-result">
-            <div className="research-rating"><span>Framework rating</span><strong>{researchResult.rating}</strong><span>{researchResult.ticker} · {researchResult.analysis_date} · {researchResult.asset_type}</span></div>
-            <div className="research-reports">{Object.entries(researchResult.reports).map(([title, report]) => <details key={title}><summary>{title}</summary><pre>{report}</pre></details>)}</div>
-            <details className="research-provenance"><summary>Run configuration and provenance</summary><pre>{JSON.stringify(researchResult.run_settings, null, 2)}</pre></details>
-            <p className="research-note">Model generated research for study, not financial advice. Framework ratings are not guaranteed outcomes or broker orders.</p>
-          </div>}
+          {researchError && (
+            <p className="error-message" role="alert">
+              {researchError}. Start the optional Python service on port 4001 and configure its
+              TradingAgents providers and data vendors.
+            </p>
+          )}
+          {!researchResult && !researchError && (
+            <p className="research-note">
+              Requires the optional Python research service and TradingAgents model and market-data
+              credentials. This date-based research workflow is separate from the short-term candle
+              scan above.
+            </p>
+          )}
+          {researchResult && (
+            <div className="research-result">
+              <div className="research-rating">
+                <span>Framework rating</span>
+                <strong>{researchResult.rating}</strong>
+                <span>
+                  {researchResult.ticker} · {researchResult.analysis_date} ·{" "}
+                  {researchResult.asset_type}
+                </span>
+              </div>
+              <div className="research-reports">
+                {Object.entries(researchResult.reports).map(([title, report]) => (
+                  <details key={title}>
+                    <summary>{title}</summary>
+                    <pre>{report}</pre>
+                  </details>
+                ))}
+              </div>
+              <details className="research-provenance">
+                <summary>Run configuration and provenance</summary>
+                <pre>{JSON.stringify(researchResult.run_settings, null, 2)}</pre>
+              </details>
+              <p className="research-note">
+                Model generated research for study, not financial advice. Framework ratings are not
+                guaranteed outcomes or broker orders.
+              </p>
+            </div>
+          )}
         </section>
         <section id="trade-history" className="history-section" aria-label="Paper trade history">
           <div className="history-header">
@@ -1031,7 +1188,9 @@ function Terminal() {
         </section>
         <footer className="footer">
           <p>
-            Binance public candles power listed crypto pairs when available; all other instruments use session simulation. Four rule-based agents analyze price candles only. Paper trades reset on reload and never place broker orders.
+            Binance public candles power listed crypto pairs when available; all other instruments
+            use session simulation. Four rule-based agents analyze price candles only. Paper trades
+            reset on reload and never place broker orders.
           </p>
           <Button variant="nav" size="sm" onClick={() => setInfoOpen(true)}>
             <CircleHelp />
@@ -1069,7 +1228,9 @@ function Terminal() {
       <Dialog open={assetsOpen} onOpenChange={setAssetsOpen}>
         <DialogContent className="dialog-content">
           <DialogTitle>All markets</DialogTitle>
-          <DialogDescription>Binance candles for supported pairs; remaining instruments are simulated.</DialogDescription>
+          <DialogDescription>
+            Binance candles for supported pairs; remaining instruments are simulated.
+          </DialogDescription>
           <div className="asset-search">
             <Search size={16} />
             <input
@@ -1095,7 +1256,8 @@ function Terminal() {
                     {a.name}
                   </span>
                   <span className="asset-result-source">
-                    {liveSymbols[a.name] ? "BINANCE" : "SIMULATED"}{i === assetIndex && <Check size={14} />}
+                    {liveSymbols[a.name] ? "BINANCE" : "SIMULATED"}
+                    {i === assetIndex && <Check size={14} />}
                   </span>
                 </Button>
               ))}
@@ -1110,7 +1272,11 @@ function Terminal() {
           <DialogTitle>Trading Assistant</DialogTitle>
           <DialogDescription>Market research terminal · browser edition</DialogDescription>
           <p className="modal-note">
-            BTC/USDT, ETH/USDT, BNB/USDT and EUR/USDT use Binance public candles when the browser can reach the exchange. Every other instrument, and any supported pair during a feed outage, uses clearly labeled simulated candles. Four independent rule-based analysts review trend, momentum, range and price action. They do not use an LLM, news or fundamentals.
+            BTC/USDT, ETH/USDT, BNB/USDT and EUR/USDT use Binance public candles when the browser
+            can reach the exchange. Every other instrument, and any supported pair during a feed
+            outage, uses clearly labeled simulated candles. Four independent rule-based analysts
+            review trend, momentum, range and price action. They do not use an LLM, news or
+            fundamentals.
           </p>
           <p className="modal-note">
             No real orders are placed. Risk controls in this preview are not a substitute for
@@ -1123,7 +1289,9 @@ function Terminal() {
           <DialogTitle>
             {asset.name} · {timeframe}m
           </DialogTitle>
-          <DialogDescription>{isLive ? `Live Binance candles · ${sourceTime} UTC` : "Session simulated candles"}</DialogDescription>
+          <DialogDescription>
+            {isLive ? `Live Binance candles · ${sourceTime} UTC` : "Session simulated candles"}
+          </DialogDescription>
           <div className="chart-canvas">
             <PriceChart
               candles={candles}

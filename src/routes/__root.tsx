@@ -81,7 +81,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "Trading Assistant — Market Research Terminal" },
       {
         name: "description",
-        content: "Browser-based market research with Binance candles, rule-based analyst agents, and session-only paper trading.",
+        content:
+          "Browser-based market research with Binance candles, rule-based analyst agents, and session-only paper trading.",
       },
       { property: "og:title", content: "Trading Assistant — Market Research Terminal" },
       {

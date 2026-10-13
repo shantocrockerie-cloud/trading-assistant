@@ -4,17 +4,17 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
-    "dev": "vite dev --port 4000 --strictPort",
+    "dev": "vite dev --port 6000 --strictPort",
     "build": "vite build",
     "build:dev": "vite build --mode development",
-    "preview": "vite preview --port 4000 --strictPort",
+    "preview": "vite preview --port 6000 --strictPort",
     "lint": "eslint .",
     "format": "prettier --write .",
     "test": "vitest run",
     "test:watch": "vitest"
   },
   "overrides": {
-    "rolldown": "1.2.1"
+    "rollup": "npm:@rollup/wasm-node"
   },
   "dependencies": {
     "@ai-sdk/openai": "^4.0.91",
@@ -92,7 +92,7 @@
     "prettier": "^3.7.3",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.56.1",
-    "vite": "8.1.5",
-    "vitest": "^4.1.10"
+    "vite": "^7.3.1",
+    "vitest": "^3.2.4"
   }
 }

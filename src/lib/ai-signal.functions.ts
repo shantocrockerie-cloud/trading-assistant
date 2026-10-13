@@ -79,7 +79,11 @@ export const analyzeWithAi = createServerFn({ method: "POST" })
           : status === 401 || status === 403
             ? "The configured model rejected its API credentials."
             : "The configured AI provider could not complete this analysis.";
-      console.error("AI analyst failed", status, error instanceof Error ? error.name : "UnknownError");
+      console.error(
+        "AI analyst failed",
+        status,
+        error instanceof Error ? error.name : "UnknownError",
+      );
       return {
         direction: "WAIT",
         confidence: 0,

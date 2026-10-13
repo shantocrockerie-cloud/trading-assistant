@@ -17,7 +17,7 @@ load_dotenv()
 app = FastAPI(title="Trading Assistant Research API", version="1.0.0")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:4000", "http://127.0.0.1:4000"],
+    allow_origins=["http://localhost:6000", "http://127.0.0.1:6000"],
     allow_methods=["GET", "POST"],
     allow_headers=["Content-Type"],
 )

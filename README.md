@@ -17,14 +17,16 @@ Copy `.env.example` to `.env` and configure `AI_BASE_URL`, `AI_API_KEY`, and `AI
 
 ## Run locally
 
-Requirements: Node.js 20+ and npm.
+Requirements: Node.js 20.19+ (or 22.12+) and npm. These versions match the Vite 7 runtime requirements.
 
 ```sh
-npm install
+npm install --include=dev --os=android --cpu=arm64
 npm run dev
 ```
 
-The development server binds to port `4000`: <http://localhost:4000>.
+The install flags include build tools and Android ARM64 native modules even when a global npm configuration targets Linux or omits development dependencies.
+
+The development server binds to port `6000`: <http://localhost:6000>.
 
 ### TradingAgents research service
 
