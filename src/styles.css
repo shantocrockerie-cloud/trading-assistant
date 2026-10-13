@@ -66,3 +66,136 @@ button,input,select {font:inherit} button,a,input,select {touch-action:manipulat
 .agent-consensus {margin-top:12px;padding-top:10px;border-top:1px solid var(--border)}
 @keyframes agent-pulse {to {opacity:.35;box-shadow:0 0 0 4px color-mix(in oklab,var(--primary) 12%,transparent)}}
 @media(max-width:760px) {.agent-desk {padding:14px}.agent-cards {grid-template-columns:1fr}.agent-card>p {font-size:11px}.asset-feed-tag {font-size:8px}}
+
+/* Terminal polish pass: strengthen hierarchy, surfaces, and input feedback. */
+:root {
+ --background:oklch(0.145 0.008 252);
+ --card:oklch(0.19 0.009 252);
+ --secondary:oklch(0.225 0.01 252);
+ --accent:oklch(0.27 0.012 252);
+ --border:oklch(0.31 0.012 252);
+ --primary:oklch(0.82 0.15 163);
+ --primary-foreground:oklch(0.18 0.035 163);
+ --muted-foreground:oklch(0.69 0.015 252);
+ --shadow-panel:0 16px 44px oklch(0.06 0.01 252 / 22%);
+}
+html {scroll-behavior:smooth;scroll-padding-top:24px}
+body {min-width:320px;background:radial-gradient(ellipse at 50% -32%,oklch(0.24 0.025 250 / 48%),transparent 58%),var(--background)}
+.app-header {position:sticky;top:0;z-index:40;background:color-mix(in oklab,var(--card) 90%,transparent);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-color:color-mix(in oklab,var(--border) 78%,transparent)}
+.brand-mark {background:color-mix(in oklab,var(--primary) 10%,transparent);border:1px solid color-mix(in oklab,var(--primary) 22%,transparent);border-radius:10px;width:38px;height:38px}
+.brand-mark svg {width:22px;height:22px}
+.brand-title {letter-spacing:-.045em}
+.brand-caption {letter-spacing:.12em;font-size:9px}
+.workspace {max-width:1480px;padding-top:34px}
+.intro {margin-bottom:30px}
+.intro h1 {font-size:clamp(25px,2.1vw,32px);letter-spacing:-.045em}
+.intro p {font-size:14px}
+.session {padding:9px 12px;border:1px solid var(--border);border-radius:999px;background:color-mix(in oklab,var(--card) 72%,transparent)}
+.section-heading {margin-bottom:14px}
+.section-heading h2,.configuration h2 {font-size:14px;letter-spacing:-.01em}
+.asset-strip {gap:12px;margin-bottom:27px}
+.asset-tile {height:108px;padding:14px;border-radius:10px;gap:14px;box-shadow:inset 0 1px 0 color-mix(in oklab,white 3%,transparent);transition:transform 160ms cubic-bezier(.23,1,.32,1),border-color 160ms ease,background 160ms ease}
+.asset-tile.active {box-shadow:inset 0 0 0 1px color-mix(in oklab,var(--primary) 22%,transparent),0 8px 24px color-mix(in oklab,var(--primary) 7%,transparent)}
+.asset-icon {border:1px solid color-mix(in oklab,var(--border) 75%,transparent);font-weight:600}
+.asset-feed-tag {font-size:8px;letter-spacing:.08em}
+.main-grid {grid-template-columns:minmax(0,1fr) minmax(320px,350px);gap:22px}
+.chart-tool,.signal-panel,.agent-desk,.research-section {border-radius:12px;box-shadow:var(--shadow-panel)}
+.chart-header {padding:21px 22px 17px}
+.chart-asset h2 {letter-spacing:-.02em}
+.chart-header-price strong {font-size:23px;letter-spacing:-.025em}
+.chart-toolbar {background:color-mix(in oklab,var(--background) 35%,var(--card));padding:8px 14px}
+.chart-toolbar .terminal-button {border-radius:6px;transition:color 150ms ease,background 150ms ease,border-color 150ms ease}
+.chart-canvas {height:390px}
+.chart-source {font-family:var(--font-mono);letter-spacing:.025em}
+.chart-foot {gap:14px;line-height:1.5}
+.configuration {padding-top:26px}
+.configuration-head {margin-bottom:18px}
+.form-grid {gap:14px}
+.select-field,.feed-field {border-radius:8px;background:color-mix(in oklab,var(--card) 76%,var(--background));transition:border-color 150ms ease,box-shadow 150ms ease}
+.select-field:focus-visible,.research-controls input:focus-visible,.research-controls select:focus-visible,.asset-search:focus-within {border-color:var(--primary);box-shadow:0 0 0 3px color-mix(in oklab,var(--primary) 13%,transparent)}
+.strategy-grid {gap:10px}
+.strategy {min-height:44px;border-radius:8px;background:color-mix(in oklab,var(--card) 76%,var(--background));transition:border-color 150ms ease,background 150ms ease}
+.strategy.checked {background:color-mix(in oklab,var(--primary) 5%,var(--card));border-color:color-mix(in oklab,var(--primary) 42%,var(--border))}
+.scan-button {height:50px;border-radius:8px;box-shadow:0 8px 22px color-mix(in oklab,var(--primary) 12%,transparent);transition:transform 140ms cubic-bezier(.23,1,.32,1),background 150ms ease,box-shadow 150ms ease}
+.scan-button:hover:not(:disabled) {box-shadow:0 10px 28px color-mix(in oklab,var(--primary) 20%,transparent)}
+.scan-note {line-height:1.55}
+.signal-panel {position:sticky;top:98px}
+.panel-heading {padding:17px 19px;background:color-mix(in oklab,var(--background) 26%,var(--card))}
+.signal-content {padding:20px}
+.signal-result {padding:7px 0 13px}
+.signal-icon {border-radius:11px}
+.signal-result h3 {letter-spacing:-.03em}
+.confidence-meter {border-radius:999px;overflow:hidden}
+.indicators,.reason-list {border-color:color-mix(in oklab,var(--border) 75%,transparent)}
+.indicator-row {min-height:34px}
+.execution {background:color-mix(in oklab,var(--background) 24%,var(--card))}
+.trade-actions .terminal-button {border-radius:8px;transition:transform 140ms cubic-bezier(.23,1,.32,1),background 150ms ease,border-color 150ms ease}
+.trade-actions .terminal-button:disabled {opacity:.45;cursor:not-allowed}
+.agent-desk,.research-section {padding:20px;background:color-mix(in oklab,var(--primary) 2.5%,var(--card))}
+.agent-card {border-radius:9px;padding:14px;background:color-mix(in oklab,var(--background) 28%,var(--card))}
+.agent-card>p {font-size:11px;line-height:1.65}
+.agent-stance {letter-spacing:.09em;font-weight:600}
+.research-controls input,.research-controls select {border-radius:8px;background:var(--background)}
+.research-controls button {border-radius:8px}
+.research-reports details,.research-provenance {border-radius:8px}
+.history-section {margin-top:34px;padding:0 18px 14px;border:1px solid var(--border);border-radius:12px;background:var(--card);box-shadow:var(--shadow-panel)}
+.history-header {padding:19px 0}
+.history-header h2 {letter-spacing:-.02em}
+.history-table {border-collapse:separate;border-spacing:0}
+.history-table th {position:sticky;top:0;background:color-mix(in oklab,var(--background) 35%,var(--card));letter-spacing:.07em;text-transform:uppercase}
+.history-table td,.history-table th {padding:14px 16px}
+.history-table tbody tr:hover td {background:color-mix(in oklab,var(--primary) 3%,var(--card))}
+.risk-grid>div {padding:14px;border:1px solid var(--border);border-radius:9px;background:color-mix(in oklab,var(--background) 26%,var(--card))}
+.footer {margin-top:28px;padding:20px 0 28px;line-height:1.65}
+.dialog-content {border-radius:14px;padding:24px;box-shadow:0 28px 90px oklch(0.04 0.01 252 / 58%)}
+.asset-search {border-radius:8px;transition:border-color 150ms ease,box-shadow 150ms ease}
+.asset-result {border-radius:7px}
+.mobile-dock {background:color-mix(in oklab,var(--card) 92%,transparent);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+button:active:not(:disabled),a:active {transform:scale(.98)}
+button:disabled {cursor:not-allowed}
+@media (hover:hover) and (pointer:fine) {
+ .asset-tile:hover {transform:translateY(-2px)}
+ .agent-card:hover {border-color:color-mix(in oklab,var(--primary) 30%,var(--border))}
+}
+@media(max-width:1100px) {
+ .main-grid {grid-template-columns:minmax(0,1fr) 310px;gap:16px}
+ .workspace {padding-left:24px;padding-right:24px}
+}
+@media(max-width:760px) {
+ html {scroll-padding-top:14px}
+ .app-header {height:66px;padding:0 14px}
+ .workspace {padding:21px 14px 94px}
+ .intro {margin-bottom:22px}
+ .intro p {max-width:260px}
+ .session {padding:7px 9px}
+ .asset-strip {gap:9px;margin-bottom:22px}
+ .asset-tile {height:91px;padding:11px;border-radius:9px;gap:11px}
+ .main-grid {grid-template-columns:1fr;gap:22px}
+ .chart-tool,.signal-panel,.agent-desk,.research-section,.history-section {border-radius:10px}
+ .chart-header {padding:15px 13px 13px}
+ .chart-header-price strong {font-size:18px}
+ .chart-canvas {height:320px}
+ .chart-foot {align-items:flex-start;flex-direction:column;gap:6px}
+ .configuration {padding-top:23px}
+ .strategy-grid {gap:8px}
+ .strategy {min-height:44px;padding:10px 8px}
+ .signal-panel {position:static}
+ .research-section {padding:15px}
+ .history-section {padding:0 10px 10px}
+ .history-table td,.history-table th {padding:12px 10px}
+ .risk-grid>div {padding:12px}
+ .dialog-content {padding:20px}
+ .mobile-dock {height:calc(67px + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom)}
+}
+@media(max-width:380px) {
+ .brand-title {font-size:18px}
+ .brand-caption {font-size:8px}
+ .header-balance strong {font-size:12px}
+ .chart-source {gap:7px;font-size:8px}
+ .chart-toolbar .terminal-button {min-width:28px;padding:0 6px}
+ .strategy {font-size:10px}
+}
+@media(prefers-reduced-motion:reduce) {
+ html {scroll-behavior:auto}
+ button:active:not(:disabled),a:active {transform:none}
+}
