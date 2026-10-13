@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import inspect
 import re
 from datetime import date
 from typing import Literal
@@ -64,12 +65,30 @@ def run_research(request: ResearchRequest) -> dict[str, object]:
             debug=False,
             config=build_default_config(),
         )
-        final_state, rating = graph.propagate(
-            ticker,
-            request.analysis_date.isoformat(),
-            asset_type=request.asset_type,
+        propagate = graph.propagate
+        parameters = inspect.signature(propagate).parameters.values()
+        accepts_asset_type = any(
+            parameter.name == "asset_type"
+            or parameter.kind is inspect.Parameter.VAR_KEYWORD
+            for parameter in parameters
         )
-        settings = graph.run_settings()
+        if request.asset_type == "crypto" and not accepts_asset_type:
+            raise HTTPException(
+                status_code=422,
+                detail="This installed TradingAgents version does not support crypto research.",
+            )
+
+        if accepts_asset_type:
+            final_state, rating = propagate(
+                ticker,
+                request.analysis_date.isoformat(),
+                asset_type=request.asset_type,
+            )
+        else:
+            final_state, rating = propagate(ticker, request.analysis_date.isoformat())
+
+        settings_method = getattr(graph, "run_settings", None)
+        settings = settings_method() if callable(settings_method) else {}
         return {
             "ticker": ticker,
             "analysis_date": request.analysis_date.isoformat(),
@@ -87,6 +106,8 @@ def run_research(request: ResearchRequest) -> dict[str, object]:
             },
             "run_settings": settings,
         }
+    except HTTPException:
+        raise
     except Exception as error:  # keep provider details and credentials out of the client response
         print(f"TradingAgents research failed ({type(error).__name__}).")
         raise HTTPException(
