@@ -21,12 +21,12 @@ Requirements: Node.js 20.19+ (or 22.12+) and npm. These versions match the Vite 
 
 ```sh
 npm install --include=dev --os=android --cpu=arm64
-npm run dev
+npm run dev -- --port 5173 --strictPort
 ```
 
 The install flags include build tools and Android ARM64 native modules even when a global npm configuration targets Linux or omits development dependencies.
 
-The development server binds to port `6000`: <http://localhost:6000>.
+The development server uses port `5173`: <http://localhost:5173>. This is the recommended command for Termux and other local environments.
 
 ### TradingAgents research service
 
@@ -46,7 +46,7 @@ Set TradingAgents provider and vendor keys in `.env` using the [upstream configu
 
 The upstream framework uses its own dataflows and applies point-in-time rules to supported historical sources. Reports include safe run settings so you can review model/provider choices and vendor routing. Individual source coverage can vary. Provider/model output is research, not investment advice or an order sent to a broker.
 
-To create a production build and preview it on the same port:
+To create a production build and preview it on port `5173`:
 
 ```sh
 npm run build

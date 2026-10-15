@@ -4,10 +4,10 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
-    "dev": "vite dev --port 6000 --strictPort",
+    "dev": "vite dev --port 5173 --strictPort",
     "build": "vite build",
     "build:dev": "vite build --mode development",
-    "preview": "vite preview --port 6000 --strictPort",
+    "preview": "vite preview --port 5173 --strictPort",
     "lint": "eslint .",
     "format": "prettier --write .",
     "test": "vitest run",
